@@ -20,10 +20,12 @@ const parseQuery = (rawQueryObject) => {
         return merge.all(
             [parsedQuery, combineORexpressions(orArray)]
         )
+    } else if (orArray.length === 1) {
+        return merge.all(
+            [parsedQuery, orArray[0]]
+        )
     }
-    return merge.all(
-        [parsedQuery, orArray[0]]
-    )
+    return parsedQuery
 }
 
 export {

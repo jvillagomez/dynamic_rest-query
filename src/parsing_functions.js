@@ -75,6 +75,9 @@ var parseEQexpression = (keyValueArray) => {
 };
 
 const parseExpression = (key, expression) => {
+    if (typeof(expression) === 'boolean') {
+        return parseEQexpression([key, expression]);
+    }
     if (expression.includes('*OR*')) {
         return parseORexpression([key , expression]);    
     } else if (expression.includes('*AND*')) {
