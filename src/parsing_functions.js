@@ -1,4 +1,5 @@
 import { convertStringToArray, convertIfNumeric } from './helper_functions'
+import merge from 'deepmerge'
 
 // GREATER THAN
 var parseGTexpression = (keyValueArray) => {
@@ -74,6 +75,14 @@ var parseEQexpression = (keyValueArray) => {
     return parsedEntry
 };
 
+var parseEXISTSexpression = (keyValueArray) => {
+    var parsedEntry = {};
+    parsedEntry[keyValueArray[0]] = {
+        $exists: keyValueArray[1]
+    }
+    return parsedEntry
+};
+
 const parseExpression = (key, expression) => {
     if (typeof(expression) === 'boolean') {
         return parseEQexpression([key, expression]);
@@ -82,6 +91,8 @@ const parseExpression = (key, expression) => {
         return parseORexpression([key , expression]);    
     } else if (expression.includes('*AND*')) {
         return parseANDexpression([key , expression]);        
+    } else if (expression.includes('*exists*')) {
+        return parseEXISTSexpression([key , true]);
     } else if (expression.includes('*GT*')) {
         return parseGTexpression([key , expression]);
     } else if (expression.includes('*GTE*')) {
